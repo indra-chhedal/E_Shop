@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} cart {% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="border rounded p-4 m-4">
+        <p class="display-4 pl-4 ml-4">my cart</p>
+        
+        <hr>
+        <table class="table">
+            <thead>
+            <tr>
+                <th> Sr no.</th>
+                <th> Image</th>
+                <th> Product Name</th>
+                <th> Quantity</th>
+                <th> Price</th>
+                <th></th>
+                <th>Action</th>
+            </tr>
+            
+            </thead>
+            <tbody>
+                {%for cart in cart%}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td><image style="height: 80px;" class="rounded-circle" src="{{cart.product.Image.url}}" alt=""></image></td>
+                <td>{{cart.product.Name}}</td>
+                <td>{{cart.quantity}}</td>
+                <td>Rs. {{cart.product.price}}</td>
+                
+                
+                <td><input type="button" pid="{{cart.product.id}}" class="minus-cart btn btn-primary" value="-"></td>
+                <td><span id="quantity" >{{cart.quantity}}</span></td>
+                <td><input type="button" pid="{{cart.product.id}}" class="plus-cart btn btn-primary" value="+"></td>
+                <td><input type="button" pid="{{cart.product.id}}" class="btn btn-danger btn-sm remove-cart" value="Delete"></td>
+                
+            </tr>
+            </tbody>
+            {%endfor%}
+        </table>
+        <hr>
+        <div class="m-3 p-3">
+            <a href="#" class="btn btn-outline-info border rounded col-lg-3 float-left">Check Out</a>
+        </div>
+    </div>
+</div>
+
+{% comment %} checkout {% endcomment %}
+
+{% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('.plus-cart').click (function(){
+        var id =$(this).attr("pid").toString();
+        console.log(id)
+        $.ajax({
+            type : "GET",
+            url : "/plus_cart";
+            data : {
+                prod_id : id
+            },
+            success:function(data){
+                console.log(data)
+
+            }
+        })
+    });
+
+    $('.minus-cart').click (function(){
+        var id =$(this).attr("pid").toString();
+        console.log(id)
+        $.ajax({
+            type : "GET",
+            url : "/minus_cart"
+            data : {
+                prod_id : id
+            },
+            success:function(data){
+                console.log(data)
+
+            }
+        })
+    });
+
+    $('.remove-cart').click (function(){
+        var id =$(this).attr("pid").toString();
+        console.log(id)
+        var rel=this
+        $.ajax({
+            type : "Get",
+            url : "/remove_cart"
+            data : {
+                prod_id : id
+            },
+            success:function(data){
+                console.log(data)
+                $(mythis).closest("tr").fadeout();
+
+            }
+        })
+    });
+
+</script> {% endcomment %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Add to cart
+    function addToCart(productId) {
+        $.get('/plus-cart/', { prod_id: productId }, function(data) {
+            if (data.quantity) {
+                console.log("Quantity updated:", data.quantity);
+                // Update the UI here
+            }
+        });
+    }
+
+    // Remove from cart
+    function removeFromCart(productId) {
+        $.get('/remove-cart/', { prod_id: productId }, function(data) {
+            if (data.message) {
+                console.log(data.message);
+                // Update the UI here
+            }
+        });
+    }
+
+    // Decrease quantity
+    function decreaseCart(productId) {
+        $.get('/minus-cart/', { prod_id: productId }, function(data) {
+            if (data.quantity !== undefined) {
+                console.log("Quantity:", data.quantity);
+                // Update the UI here
+            }
+        });
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html"%}
+
+
+{% block title %}
+    Product details
+{% endblock title %}   
+{% block content %}
+    
+    <div class="container my-5">
+    <div class="row">
+        <div class="col-sm-6 text-center align self-center">
+            <img src="{{ product.Image.url }}" alt="" class="img-fluid img-thumbnail">
+        </div>
+        <div class="col-sm-5 offset-sm-1">
+            <h2>{{ product.Name }}</h2>
+            <hr>
+            <p>Descreption: {{ product.Description }}</p>
+            <h4>Rs. {{ product.Price }}</h4>
+
+            {% if request.session %}
+            {% if item_already_in_cart %}
+            
+            <a href="/show_cart" class="btn btn-warning shadow px-5 py-2 ms-4">Go to cart</a>
+            {% else %}
+            
+            <form action="/add_to_cart" class="btn-block">
+                {% csrf_token %}
+                <input type="hidden"name="prod_id" value="{{ product.id }}" id="prod_id">
+                <button type="submit" class="btn_info shadow px-5 py-2 ms-4">Add To Cart</button>
+            </form>
+            
+            {% endif %}
+        {% endif %}
+            
+        </div>
+    </div>
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html"%}
+{% block title %}
+    Customer login
+{% endblock title %}
+
+{% block content %}
+    
+    <div class="container">
+    <div class="row my-3">
+        <div class="col-sm-6 offset-sm-3">
+            <h3>Customer Login</h3>
+            <form action="/login" method="post" class="shadow p-5">
+                
+                {% csrf_token %}
+                
+                {% if error %}
+            <div class="alert alert-danger form-control-lg" role="alert">
+                {{ error }}
+            </div>
+            {% endif %}
+            
+                <div class="form-group">
+                    <label for="" class="form-control-lg">Mobile No.</label>
+                    <input type="text" name="phone" id="" value="{{ value.phone }}" class="form-control" placeholder="Enter phone">
+                </div>
+                <div class="form-group pt-4">
+                    <input class="btn btn-sm btn-info" type="submit" value="Login">
+                </div>
+                <div class="text-center text-primary fw-bold">
+                <small class="form-control-sm"> you have no account! create new </small>
+                <a href="/signup" class="text-danger form-control-sm">Signup</a>
+            </div>
+            </form>
+            
+        </div>
+        
+    </div>
+    </div>
+
+{% endblock %}
