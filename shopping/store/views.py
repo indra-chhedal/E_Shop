@@ -2,7 +2,6 @@
 
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib import  messages
 from django.views import View
 
@@ -19,33 +18,37 @@ from .models import Cart
 
 # Create your views here.
 #================================home======================#
+
 def home(request):
     products = None
     totalitem = 0
-    if request.session.has_key('phone'):#session to login page
+
+    if request.session.has_key('phone'):
         phone = request.session['phone']
         totalitem = len(Cart.objects.filter(phone=phone))
         category = Category.get_all_categories()
         customer = Customer.objects.filter(phone=phone)
+
+        name = ''
         for c in customer:
             name = c.name
 
+        categoryID = request.GET.get('category')
+        if categoryID:
+            products = Product.get_all_product_by_category_id(categoryID)
+        else:
+            products = Product.get_all_products()
 
-            categoryID = request.GET.get('category')
-            if categoryID:
-                products = Product.get_all_product_by_category_id(categoryID)
+        data = {
+            'name': name,
+            'product': products,
+            'category': category,
+            'totalitem': totalitem
+        }
 
-            else:
-                products = Product.get_all_products()
+        # print('you are', request.session.get('phone'))
+        return render(request, 'home.html', data)
 
-                # print(products)
-                data = {}
-                data['name'] = name
-                data['product'] = products
-                data['category'] = category
-                data['totalitem'] = totalitem
-                print('you are', request.session.get('phone'))#print phone in session
-                return render(request,'home.html',data)
     else:
         return redirect('login')
 

@@ -4,6 +4,7 @@ from django.urls import path
 from store import views
 
 
+
 urlpatterns = [
     path('',views.home, name='homepage'),#for home page
     path('signup',views.Signup.as_view(), name='signup'),#for signup page
@@ -15,8 +16,5 @@ urlpatterns = [
     path('plus_cart',views.plus_cart, name='plus_cart'), #for plus cart
     path('minus_cart',views.minus_cart, name='minus_cart'), #for minus cart
     path('remove_cart',views.remove_cart, name='remove_cart') #for remove cart
-
-
-
-
 ]
+
